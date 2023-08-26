@@ -15,9 +15,17 @@ Para preparar el ambiente, necesitamos tener algunas cosas instaladas en la comp
 ### img-option
 - Alternativamente:
 
- + 1) Podemos trabajar con editores de código como intellij , visual studio code, pero estos tienen configuraciones diferentes a las que serán utilizadas en el video, sin embargo, es posible trabajar con ellos dejando como desafío usar otro editor de código.
+ + 1 Podemos trabajar con editores de código como intellij , visual studio code, pero estos tienen configuraciones diferentes a las que serán utilizadas en el video, sin embargo, es posible trabajar con ellos dejando como desafío usar otro editor de código.
+
  + [IntelliJ IDEA](https://www.jetbrains.com/idea/download/#section=windows "IntelliJ IDEA")
+
  + [Visual Studio Code](https://code.visualstudio.com/Download "Visual Studio Code")
-- 2) En el curso vamos a utilizar la base de datos H2 dejamos como desafío el uso de otras bases de datos.
+- 2 En el curso vamos a utilizar la base de datos H2 dejamos como desafío el uso de otras bases de datos.
 
  + [Maven Repository: com.h2database](https://mvnrepository.com/artifact/com.h2database/h2/2.0.206 "Maven Repository: com.h2database")
+
+### Diferencia entre Hibernate y JPA
+
+- JPA es la especificación mientras que Hibernate es una de sus implementaciones.
+
+- JDBC es un estándar de bajo nivel para interactuar con bases de datos. JPA es un estándar de alto nivel para el mismo propósito.
