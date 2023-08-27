@@ -147,3 +147,163 @@ En esta lección, aprendiste:
 ¿Comenzando en esta etapa? Aquí puedes descargar los archivos del proyecto que hemos avanzado hasta el aula anterior.
 
 [Descargue los archivos en Github](https://github.com/alura-cursos/JPA-hibernate-Alura/tree/stage-2 "Descargue los archivos en Github") o haga clic [aquí](https://github.com/alura-cursos/JPA-hibernate-Alura/archive/refs/heads/stage-2.zip "aquí") para descargarlos directamente.
+
+## Haga lo que hicimos en aula: mapeando relacionamientos
+
+Ha llegado el momento de que sigas todos los pasos que he dado durante esta lección. En caso de que ya lo hayas hecho, excelente. Si aún no lo ha hecho, es importante que realice lo que se vio en los videos para que pueda continuar con la siguiente lección.
+
+- Lo primero que vamos a realizar es organizar el código delegando la responsabilidad de instanciar el EntityManager a una clase utilitaria cuya única función será instanciarlo.
+
+```java
+public class JPAUtils {
+
+    private static EntityManagerFactory FACTORY = Persistence.createEntityManagerFactory("tienda");
+
+    public static EntityManager getEntityManager() {
+        return FACTORY.createEntityManager();
+    }
+}
+```
+
+- Luego vamos a realizar el mapeamiento entre entidades esta relación puede ser entre una entidad y un Enum o entre dos relaciones.
+
+- Para relacionamientos entre entidades y Enum:
+
+Se debe modificar la entidad y utilizar la anotación adecuada para el tipo Enum de esta forma JPA sabrá reconocer el elemento Enum.
+
+```java
+@Id
+@GeneratedValue(strategy = GenerationType.IDENTITY)
+private Long id;
+private String nombre;
+private String descripcion;
+private BigDecimal precio;
+private LocalDate fechaDeRegistro = LocalDate.now();   
+@Enumerated(EnumType.STRING)
+private Categoria categoria;
+```
+
+- Crear la clase de tipo Enum.
+
+```java
+public enum Categoria {
+CELULARES,
+TABLETS,
+LIBROS;
+}
+```
+
+- Para relacionamientos entre dos entidades
+
+![Relacionamiento entre dos entidades](https://caelum-online-public.s3.amazonaws.com/1954-persistencia-jpa-hibernate/img_aula3_a.JPG "Relacionamiento entre dos entidades")
+
+- Se debe añadir la nueva entidad como atributo en la entidad principal con la diferencia que vamos a utilizar la anotación para mapear relaciones de cardinalidad.
+
+```java
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String nombre;
+    private String descripcion;
+    private BigDecimal precio;
+    private LocalDate fechaDeRegistro = LocalDate.now();   
+    @ManyToOne
+    private Categoria categoria;
+```
+
+- Debe ser creada esa entidad al igual que se hizo con la entidad producto.
+
+```java
+@Entity
+@Table(name="categorias")
+public class Categoria {
+
+@Id
+@GeneratedValue(strategy=GenerationType.IDENTITY)
+private Long id;
+private String nombre;
+
+public Categoria() {}
+
+public Categoria(String nombre) {
+this.nombre = nombre;
+}
+
+public Long getId() {return id;    }
+
+public void setId(Long id) {this.id = id;}
+
+public String getNombre() {return nombre;}
+
+public void setNombre(String nombre) {this.nombre = nombre;}
+
+}
+```
+
+- Por último, continuando con la organización del proyecto se crea una clase DAO donde se van a configurar las operaciones de acceso a la base de datos.
+
+```java
+public class ProdutoDao {
+
+    private EntityManager em;
+
+    public ProdutoDao(EntityManager em) {
+        this.em = em;
+    }
+
+    public void cadastrar(Produto produto) {
+        this.em.persist(produto);
+    }
+
+}
+
+public class CategoriaDao{
+
+    private EntityManager em;
+
+public CategoriaDao(EntityManager em) { 
+        this.em = em;
+        }
+
+        public void cadastrar(Categoria categoria) {
+            this.em.persist(categoria);
+        }
+
+ }
+```
+
+Y la clase main ahora se vería de la siguiente forma:
+
+```java
+public class RegistroDeProducto {
+
+    public static void main(String[] args) {
+        Categoria celulares = new Categoria("CELULARES");
+
+        Producto celular = new Producto("Xiaomi Redmi", "Muy bueno", new BigDecimal("800"), celulares);
+
+        EntityManager em = JPAUtils.getEntityManager();
+
+        ProductoDao productoDao = new ProductoDao(em);
+                CategoriaDao categoriaDao = new CategoriaDao(em);
+
+        em.getTransaction().begin();
+
+        categoriaDao.guardar(celulares);
+        productoDao.guardar(celular);    
+
+        em.getTransaction().commit();
+        em.close();
+    }
+
+}
+```
+### Lo que aprendimos
+
+Lo que aprendimos en esta aula:
+
+En esta lección, aprendiste:
+
+- Cómo escribir una clase DAO usando JPA;
+- Cómo asignar atributos de tipo Enum en una entidad;
+- Cómo mapear una relación entre entidades.
