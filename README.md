@@ -307,3 +307,61 @@ En esta lección, aprendiste:
 - Cómo escribir una clase DAO usando JPA;
 - Cómo asignar atributos de tipo Enum en una entidad;
 - Cómo mapear una relación entre entidades.
+
+### Proyecto del aula anterior
+
+¿Comenzando en esta etapa? Aquí puedes descargar los archivos del proyecto que hemos avanzado hasta el aula anterior.
+
+[Descargue los archivos en Github](https://github.com/alura-cursos/JPA-hibernate-Alura/tree/stage-3 "Descargue los archivos en Github") o haga clic [aquí](https://github.com/alura-cursos/JPA-hibernate-Alura/archive/refs/heads/stage-3.zip "aquí") para descargarlos directamente.
+
+### Haga lo que hicimos en aula: ciclo de vida de una entidad
+
+Aquí vimos los diferentes estados de una entidad y como pasar de un estado a otro utilizando JPA.
+
+![managed](https://caelum-online-public.s3.amazonaws.com/1954-persistencia-jpa-hibernate/img_aula4_a.JPG "managed")
+
+Para eso vimos el esquema gráfico donde comenzamos por el estado transiente que tiene una entidad al ser instanciada, luego pasamos al estado Managed utilizando el método persist() de JPA hasta el momento que sincronizamos la información con la base de datos utilizando el método `flush()` o `commit()` de JPA.
+
+Estas transiciones de estados fueron realizadas en el DAO (Data Access Object) de la clase Producto y de la clase Categoria donde configuramos los métodos para persistir una entidad, para actualizar o modificar una entidad ya existente o para eliminar un registro de la base de datos. Nuestro DAO para la clase producto quedó de la siguiente forma al igual que para categoría:
+
+```java
+public class ProductoDao {
+
+    private EntityManager em;
+
+    public ProductoDao(EntityManager em) {
+        this.em = em;
+    }
+
+    public void guardar(Producto producto) {
+        this.em.persist(producto);
+    }
+
+    public void actualizar(Producto producto) {
+        this.em.merge(producto);
+    }
+
+    public void remover(Producto producto) {
+        categoria=this.em.merge(producto);
+        this.em.remove(producto);
+    }
+
+}
+```
+
+### Lo que aprendimos
+
+Lo que aprendimos en esta aula:
+
+En esta lección, aprendiste:
+
+- Cómo funciona el ciclo de vida de las entidades JPA;
+- Las transiciones de estado de una entidad cuando persisten;
+- Las transiciones de estado de una entidad cuando se actualizan;
+- Las transiciones de estado de una entidad cuando se quita.
+
+###  Proyecto del aula anterior
+
+¿Comenzando en esta etapa? Aquí puedes descargar los archivos del proyecto que hemos avanzado hasta el aula anterior.
+
+[Descargue los archivos en Github](https://github.com/alura-cursos/JPA-hibernate-Alura/tree/stage-4 "Descargue los archivos en Github") o haga clic [aquí](https://github.com/alura-cursos/JPA-hibernate-Alura/archive/refs/heads/stage-4.zip "aquí") para descargarlos directamente.

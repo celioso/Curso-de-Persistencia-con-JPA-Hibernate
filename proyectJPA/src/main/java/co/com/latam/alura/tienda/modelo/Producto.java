@@ -30,6 +30,9 @@ public class Producto {
 	
 	
 	
+	public Producto() {
+	
+	}
 	public Producto(String nombre, String descripcion, BigDecimal precio, Categoria categoria) {
 		super();
 		this.nombre = nombre;
