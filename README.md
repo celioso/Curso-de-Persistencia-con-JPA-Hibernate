@@ -365,3 +365,83 @@ En esta lección, aprendiste:
 ¿Comenzando en esta etapa? Aquí puedes descargar los archivos del proyecto que hemos avanzado hasta el aula anterior.
 
 [Descargue los archivos en Github](https://github.com/alura-cursos/JPA-hibernate-Alura/tree/stage-4 "Descargue los archivos en Github") o haga clic [aquí](https://github.com/alura-cursos/JPA-hibernate-Alura/archive/refs/heads/stage-4.zip "aquí") para descargarlos directamente.
+
+### Haga lo que hicimos en aula: consultas JPQL
+
+Finalizamos el curso realizando diversas consultas, se agregaron algunos métodos dentro de la clase DAO que nos permiten obtener registros existentes en la base de datos según un conjunto de condiciones de filtrado, para esto utilizamos el lenguaje JPQL (Java Persistence Query Language).
+
+**Los métodos en el curso no permiten:**
+
+- consultar un elemento con determinado Id;
+
+- consultar todos los registros en la base de datos;
+
+- consultar por el nombre de la entidad (producto);
+
+- consultar por el nombre de la entidad la cual está relacionada(categoría);
+
+- consultar un único atributo en la clase java o columna en la base de datos a partir del nombre.
+
+- Dejo aquí el fragmento del código:
+
+```java
+public class ProductoDao {
+
+    private EntityManager em;
+
+    public ProductoDao(EntityManager em) {
+        this.em = em;
+    }
+
+    public void guardar(Producto producto) {
+        this.em.persist(producto);
+    }    
+    public void actualizar(Producto producto) {
+        this.em.merge(producto);
+    }    
+    public void remover(Producto producto) {
+        categoria=this.em.merge(producto);
+        this.em.remove(producto);
+    }
+
+    public Producto consultaPorId(Long id) {
+        return em.find(Producto.class, id);
+    }
+
+    public List<Producto> consultarTodos(){
+        String jqpl= "SELECT P FROM Producto AS P";
+        return em.createQuery(jqpl,Producto.class).getResultList();
+    }
+    public List<Producto> consultaPorNombre(String nombre){
+        String jpql =" SELECT P FROM Producto AS P WHERE P.nombre=:nombre ";
+        return em.createQuery(jpql,Producto.class).setParameter("nombre", nombre).getResultList();
+    }
+
+    public List<Producto> consultaPorNombreDeCategoria(String nombre){
+        String jpql="SELECT p FROM Producto AS p WHERE p.categoria.nombre=:nombre";
+        return em.createQuery(jpql,Producto.class).setParameter("nombre", nombre).getResultList();
+    }
+
+    public BigDecimal consultarPrecioPorNombreDeProducto(String nombre) {
+        String jpql="SELECT P.precio FROM Producto AS P WHERE P.nombre=:nombre";
+        return em.createQuery(jpql,BigDecimal.class).setParameter("nombre", nombre).getSingleResult();
+    }
+}
+```
+
+### Proyecto final
+
+Aquí puedes descargar los archivos del proyecto completo.
+
+[Descargue los archivos en Github](https://github.com/alura-cursos/JPA-hibernate-Alura/tree/stage-final "Descargue los archivos en Github") o haga clic [aquí](https://github.com/alura-cursos/JPA-hibernate-Alura/archive/refs/heads/stage-final.zip "aquí") para descargarlos directamente.
+
+### Lo que aprendimos
+
+Lo que aprendimos en esta aula:
+
+En esta lección, aprendiste:
+
+- Cómo consultar con el método find de Entity Manager;
+- Cómo realizar consultas JPQL;
+- Cómo filtrar datos en consultas JPQL;
+- Cómo devolver sólo una parte de una entidad en una consulta JPQL.
